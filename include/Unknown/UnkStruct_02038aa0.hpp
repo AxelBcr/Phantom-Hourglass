@@ -121,6 +121,7 @@ public:
     bool func_02038ef4(s32 param1, s32 param2);
     void func_02039208(unk16 param1);
     unk32 func_02039250();
+    void *func_0203955c();
     void func_02039440(unk32 param1, unk32 param2);
     bool func_0203951c();
 
@@ -130,7 +131,7 @@ public:
     u16 *func_02037604(u16 **);
     void func_02038b28(void);
     void func_02038b74(void); // is this a dtor?
-    void func_02038f40(void);
+    void func_02038f40(s32 param1, s32 param2);
     void func_02038f44(EntryINF1 *param_2, u32 param_3, struct func_02038f44_param4 *param_4, UnkSubClass1_02256FF8 *param_5,
                        unk32 param_6);
     void func_02039058(void);
