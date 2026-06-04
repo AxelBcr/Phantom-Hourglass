@@ -4,6 +4,7 @@
 #include "Player/PlayerLinkBase.hpp"
 #include "Player/PlayerBase.hpp"
 #include "Physics/Cylinder.hpp"
+#include "Unknown/UnkStruct_ov000_020beba8.hpp"
 
 extern "C" bool func_ov000_02087e8c();
 extern "C" u16 func_ov000_020b8790(FairyId fairyId);
@@ -94,9 +95,22 @@ ARM void ActorNaviBase::func_ov000_020b9fdc() {
 }
 void ActorNaviBase::func_ov000_020b9fe8() {}
 void ActorNaviBase::vfunc_20(bool param1) {}
-void ActorNaviBase::vfunc_10(u32 param1) {}
+ARM void ActorNaviBase::vfunc_10(u32 param1) {
+    if (this->mUnk_130 == 0 && gItemManager->GetEquippedFairy() == this->GetFairyId()) {
+        this->SetActive(1);
+        return;
+    }
+    this->TeleportAboveLink();
+    if (this->vfunc_cc(0) != 0) {
+        this->SetActive(0);
+    }
+}
 unk32 ActorNaviBase::func_ov000_020ba204(Vec3p *param1, Vec3p *param2, s32 param3) {}
-unk32 func_ov000_020ba350(unk32 param1) {}
+ARM unk32 func_ov000_020ba350(unk32 param1) {
+    UnkStruct_ov000_020beba8 *self = (UnkStruct_ov000_020beba8 *)param1;
+    self->UnkStruct_ov000_020beba8::~UnkStruct_ov000_020beba8();
+    return param1;
+}
 ARM bool ActorNaviBase::vfunc_c0(Vec3p *param1) {
     this->mOffsetPos = *param1;
     s32 state = this->mUnk_130;
@@ -119,7 +133,19 @@ ARM void ActorNaviBase::func_ov000_020ba414(Vec3p *param1) {
     gPlayer->vfunc_10(&local);
     Vec3p_Add(param1, &local.pos, &this->mOffsetPos);
 }
-bool ActorNaviBase::func_ov000_020ba458() {}
+ARM bool ActorNaviBase::func_ov000_020ba458() {
+    if (gItemManager->GetEquippedFairy() == this->GetFairyId()) {
+        if (this->vfunc_cc(0) == 0) {
+            s32 state = this->mUnk_130;
+            if (state != 8 && state != 9) {
+                this->SetActive(5);
+                this->func_ov000_020ba53c();
+                return true;
+            }
+        }
+    }
+    return false;
+}
 ARM void ActorNaviBase::func_ov000_020ba4e4() {
     Vec3p local = data_ov000_020dc83c;
     if ((s16)gPlayerAngle < 0) {
