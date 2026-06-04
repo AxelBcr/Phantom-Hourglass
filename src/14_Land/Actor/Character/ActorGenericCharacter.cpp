@@ -25,22 +25,30 @@ void ActorGenericCharacter::vfunc_f8() {}
 void ActorGenericCharacter::func_ov014_02147c98() {}
 void ActorGenericCharacter::func_ov014_02147ce8(unk32 param1) {}
 void ActorGenericCharacter::func_ov014_02147d44(unk32 param1) {}
-static void func_ov014_02147df0(ActorGenericCharacter *actor) {}
+ARM static void func_ov014_02147df0(ActorGenericCharacter *actor) {
+    actor->func_ov014_02147940();
+}
 
 void ActorGenericCharacter::func_ov014_02147dfc() {}
 void ActorGenericCharacter::func_ov014_02147e1c() {}
 void ActorGenericCharacter::func_ov014_02147e64() {}
 void ActorGenericCharacter::func_ov014_02147ebc() {}
-static void func_ov014_02147ed8(ActorGenericCharacter *actor) {}
+ARM static void func_ov014_02147ed8(ActorGenericCharacter *actor) {
+    actor->func_ov014_0214591c();
+}
 
 void ActorGenericCharacter::func_ov014_02147ee4() {}
 void ActorGenericCharacter::func_ov014_02147fbc() {}
 void ActorGenericCharacter::func_ov014_02147fcc() {}
 void ActorGenericCharacter::func_ov014_021480dc() {}
-void ActorGenericCharacter::func_ov014_02148130() {}
+ARM void ActorGenericCharacter::func_ov014_02148130() {
+    mUnk_490 = 0;
+}
 void ActorGenericCharacter::func_ov014_0214813c() {}
 void ActorGenericCharacter::func_ov014_02148168() {}
 void ActorGenericCharacter::func_ov014_02148198() {}
 void ActorGenericCharacter::func_ov014_021481cc() {}
 void ActorGenericCharacter::func_ov014_021481fc() {}
-static void func_ov014_02148228(ActorGenericCharacter *actor) {}
+ARM static void func_ov014_02148228(ActorGenericCharacter *actor) {
+    actor->func_ov014_021452b0();
+}
