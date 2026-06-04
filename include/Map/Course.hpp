@@ -87,7 +87,7 @@ public:
     unk32 Get_Unk_c8_04();
     bool IsAdjacentMapOnMainGrid(unk32 dir);
     bool HasGridMap(s32 x, s32 y);
-    unk8 GetAdjacentMap(unk32 dir);
+    u8 GetAdjacentMap(unk32 dir);
     u32 GetAdjacentMapX(s32 ir);
     u32 GetAdjacentMapY(s32 dir);
     u16 FindCurrentMapData_Unk_04();
