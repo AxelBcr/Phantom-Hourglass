@@ -35,7 +35,7 @@ public:
 
     void MoveTowardTarget();
     LinkStateCutscene *GetLinkStateCutscene();
-    bool func_ov00_020a9180(Vec3p *param1);
+    s32 func_ov00_020a9180(Vec3p *param1);
     bool func_ov00_020a9210(Vec3p *param1, Actor *param2);
 
     LinkStateFollow(PlayerLinkBase *link);
