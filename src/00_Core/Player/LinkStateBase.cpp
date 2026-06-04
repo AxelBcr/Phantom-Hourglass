@@ -81,5 +81,9 @@ s32 LinkStateBase::PlayerControlData_vfunc_14(s32 param1) {}
 unk32 LinkStateBase::Get_PlayerControlData_Unk100() {}
 unk32 LinkStateBase::Get_PlayerControlData_Unk120() {}
 s32 LinkStateBase::Get_PlayerLinkBase_Unk38() {}
-Bhio *LinkStateBase::GetBhio0() {}
-Bhio *LinkStateBase::GetBhio1() {}
+ARM Bhio *LinkStateBase::GetBhio0() {
+    return mLink->mBhio_0;
+}
+ARM Bhio *LinkStateBase::GetBhio1() {
+    return mLink->mBhio_1;
+}
