@@ -84,7 +84,7 @@ public:
     void PlayerBase_vfunc_38(Vec3p *pos);
     void PlayerLinkBase_vfunc_74();
     void PlayerLinkBase_vfunc_88();
-    unk16 Get_PlayerLinkBase_Unk48();
+    u16 Get_PlayerLinkBase_Unk48();
     bool func_ov00_020a8638(unk32 param1);
     void Clear_PlayerLinkBase_Unk48(u16 flags);
     void func_ov00_020a8680(unk32 param1, unk16 param2, bool param3);
@@ -105,7 +105,7 @@ public:
     unk32 func_ov00_020a8b3c(s32 param1);
     bool func_ov00_020a8b80();
     bool HasFlags_PlayerLinkBase_Unk48(u16 flags);
-    unk8 Get_PlayerLinkBase_Unk5e();
+    u8 Get_PlayerLinkBase_Unk5e();
     unk32 Get_PlayerControlData_Unk004();
     PlayerCharacter GetCurrentCharacter();
     PlayerControlData *GetPlayerControlData();
@@ -131,7 +131,7 @@ public:
     s32 PlayerControlData_vfunc_14(s32 param1);
     unk32 Get_PlayerControlData_Unk100();
     unk32 Get_PlayerControlData_Unk120();
-    s32 Get_PlayerLinkBase_Unk38();
+    s32 *Get_PlayerLinkBase_Unk38();
     Bhio *GetBhio0();
     Bhio *GetBhio1();
 

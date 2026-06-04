@@ -1,5 +1,9 @@
 #include "Player/LinkStateBase.hpp"
 
+extern Vec3p gPlayerPos;
+extern Vec3p gPlayerVel;
+extern u16 gPlayerAngle;
+
 void LinkStateBase::vfunc_00() {}
 void LinkStateBase::OnStateEnter() {}
 void LinkStateBase::OnStateLeave(s32 param1) {}
@@ -33,7 +37,9 @@ void LinkStateBase::Teleport(Vec3p *pos, s16 angle, unk32 param3, bool param4, b
 void LinkStateBase::PlayerBase_vfunc_38(Vec3p *pos) {}
 void LinkStateBase::PlayerLinkBase_vfunc_74() {}
 void LinkStateBase::PlayerLinkBase_vfunc_88() {}
-unk16 LinkStateBase::Get_PlayerLinkBase_Unk48() {}
+ARM u16 LinkStateBase::Get_PlayerLinkBase_Unk48() {
+    return *(u16 *)&mLink->mUnk_48;
+}
 bool LinkStateBase::func_ov00_020a8638(unk32 param1) {}
 void LinkStateBase::Clear_PlayerLinkBase_Unk48(u16 flags) {}
 void LinkStateBase::func_ov00_020a8680(unk32 param1, unk16 param2, bool param3) {}
@@ -54,33 +60,60 @@ void LinkStateBase::func_ov00_020a8b04(s32 param1, bool param2) {}
 unk32 LinkStateBase::func_ov00_020a8b3c(s32 param1) {}
 bool LinkStateBase::func_ov00_020a8b80() {}
 bool LinkStateBase::HasFlags_PlayerLinkBase_Unk48(u16 flags) {}
-unk8 LinkStateBase::Get_PlayerLinkBase_Unk5e() {}
+ARM u8 LinkStateBase::Get_PlayerLinkBase_Unk5e() {
+    return *(u8 *)&mLink->mUnk_5c[2];
+}
 unk32 LinkStateBase::Get_PlayerControlData_Unk004() {}
-PlayerCharacter LinkStateBase::GetCurrentCharacter() {}
-PlayerControlData *LinkStateBase::GetPlayerControlData() {}
-LinkStateId LinkStateBase::GetStateId() {}
+ARM PlayerCharacter LinkStateBase::GetCurrentCharacter() {
+    return mLink->GetCurrentCharacter();
+}
+ARM PlayerControlData *LinkStateBase::GetPlayerControlData() {
+    return gPlayerControlData;
+}
+ARM LinkStateId LinkStateBase::GetStateId() {
+    return mLink->GetStateId();
+}
 s32 LinkStateBase::GetHealth() {}
-s32 LinkStateBase::GetCurrentCharacterHealth() {}
+ARM s32 LinkStateBase::GetCurrentCharacterHealth() {
+    PlayerLinkBase *link = mLink;
+    return link->GetHealth(link->GetCurrentCharacter());
+}
 bool LinkStateBase::func_ov00_020a8c34() {}
-Vec3p *LinkStateBase::GetPlayerPos() {}
-Vec3p *LinkStateBase::GetPlayerVel() {}
+ARM Vec3p *LinkStateBase::GetPlayerPos() {
+    return &gPlayerPos;
+}
+ARM Vec3p *LinkStateBase::GetPlayerVel() {
+    return &gPlayerVel;
+}
 unk8 *LinkStateBase::func_ov00_020a8c64() {}
-u16 *LinkStateBase::GetPlayerAngle() {}
+ARM u16 *LinkStateBase::GetPlayerAngle() {
+    return &gPlayerAngle;
+}
 void *LinkStateBase::GetPlayer_Unk18() {}
 s32 LinkStateBase::Get_PlayerControlData_Unk32() {}
-Actor *LinkStateBase::GetGrabActor() {}
-ActorRef *LinkStateBase::GetGrabActorRef() {}
+ARM Actor *LinkStateBase::GetGrabActor() {
+    return gActorManager->GetActor(&mLink->mGrabActor);
+}
+ARM ActorRef *LinkStateBase::GetGrabActorRef() {
+    return &mLink->mGrabActor;
+}
 unk32 LinkStateBase::Grab() {}
-s32 *LinkStateBase::Get_PlayerLinkBase_Unk44() {}
+ARM s32 *LinkStateBase::Get_PlayerLinkBase_Unk44() {
+    return &mLink->mUnk_44;
+}
 bool LinkStateBase::IsEquipBeingUsed(ItemFlag id) {}
-EquipItem *LinkStateBase::GetEquipItem(ItemFlag id) {}
+ARM EquipItem *LinkStateBase::GetEquipItem(ItemFlag id) {
+    return gItemManager->GetEquipItem(id);
+}
 UnkStruct_027e0fd4 *LinkStateBase::func_ov00_020a8d40() {}
 unk32 LinkStateBase::func_ov00_020a8d50() {}
 unk32 LinkStateBase::func_ov00_020a8d6c() {}
 s32 LinkStateBase::PlayerControlData_vfunc_14(s32 param1) {}
 unk32 LinkStateBase::Get_PlayerControlData_Unk100() {}
 unk32 LinkStateBase::Get_PlayerControlData_Unk120() {}
-s32 LinkStateBase::Get_PlayerLinkBase_Unk38() {}
+ARM s32 *LinkStateBase::Get_PlayerLinkBase_Unk38() {
+    return &mLink->mUnk_38;
+}
 ARM Bhio *LinkStateBase::GetBhio0() {
     return mLink->mBhio_0;
 }
