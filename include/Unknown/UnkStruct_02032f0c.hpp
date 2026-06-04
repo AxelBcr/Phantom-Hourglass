@@ -165,7 +165,7 @@ public:
     s32 func_020337d8(s32 param1);
     s32 func_020337fc(s16 *param1, s32 param2);
     void func_020338a8(s32 param1, unk32 param2);
-    void func_020338d0(unk32 *param1, unk32 param2);
+    s32 func_020338d0(unk32 *param1, unk32 param2);
     s32 func_02033904(unk32 param1, unk32 param2);
     s32 func_02033938(unk32 param1);
     s32 func_0203396c(u16 *param1);
