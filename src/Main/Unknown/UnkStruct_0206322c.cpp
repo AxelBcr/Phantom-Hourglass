@@ -79,7 +79,127 @@ THUMB void UnkStruct_0206322c::func_020304a8(bool doTopScreen, bool doBottomScre
     }
 }
 
-void DisplayDebugText(unk32 x, unk32 y, unk32 unkVal1, unk32 unkVal2, char *, unk32);
+extern "C" THUMB void func_02030420(UnkStruct_0206322c *self, unk32 x, unk32 y, unk32 tile, u8 doBottom, unk32 palette) {
+    if (!doBottom) {
+        ((u16 *)&self->topScreen)[y * SCREEN_WIDTH + x + 6] = (palette << 12) | tile;
+    } else {
+        ((u16 *)&self->bottomScreen)[y * SCREEN_WIDTH + x + 6] = (palette << 12) | tile;
+    }
+}
+
+extern "C" {
+int func_02030758(unk32);
+int func_020307dc(unk32);
+int func_02030730(unk32);
+}
+
+extern "C" THUMB int func_020305ac(unk32 x, unk32 y, unk32 palette, unk32 charCode, unk32 doBottom) {
+    unk32 secondChar;
+    int i;
+    int ret;
+
+    secondChar = 0;
+    ret        = 0;
+
+    if (charCode >= 0x8000) {
+        if (func_02030758(charCode)) {
+            charCode -= 1;
+            secondChar = 0x814A;
+        } else if (func_020307dc(charCode)) {
+            secondChar = 0x814B;
+            charCode -= 2;
+        }
+        charCode = func_02030730(charCode);
+    }
+
+    i = 0;
+    do {
+        charCode -= 0x20;
+        func_02030420(&data_0206322c, x, y, charCode, doBottom, palette);
+        if (i != 0) {
+            break;
+        }
+        if (secondChar == 0) {
+            break;
+        }
+        charCode = func_02030730(secondChar);
+        ret      = 1;
+        i++;
+        x++;
+    } while (i < 2);
+
+    return ret;
+}
+
+extern "C" int func_020306c0(char *str, int charIdx);
+
+THUMB void DisplayDebugText(unk32 x, unk32 y, unk32 align, unk32 unkVal2, char *str, unk32 param6) {
+    u8 *cursor;
+    int charIdx;
+    int col;
+    int curChar;
+    int curX;
+
+    cursor  = (u8 *)str;
+    charIdx = 0;
+    curX    = x;
+    col     = -1;
+
+    if (*cursor == 0) {
+        return;
+    }
+
+    do {
+        if (col < 0x20) {
+            if (func_02030758(curChar)) {
+                if (col > 0x1e) {
+                    y++;
+                    col = -1;
+                }
+            }
+        }
+
+        if (col < 0) {
+            switch (align) {
+                case 1:
+                    curX = x - (func_020306c0(str, charIdx) >> 1);
+                    if (curX < 0) {
+                        curX = 0;
+                    }
+                    break;
+                case 2:
+                    curX = x - func_020306c0(str, charIdx);
+                    if (curX < 0) {
+                        curX = 0;
+                    }
+                    break;
+                case 0:
+                    curX = x;
+                    break;
+            }
+            col = curX;
+        }
+
+        curChar = *cursor;
+        cursor++;
+        charIdx++;
+        if (curChar >= 0x80 && *cursor != 0) {
+            curChar = (curChar << 8) | *cursor;
+            cursor++;
+            charIdx++;
+        }
+
+        if (curChar == 0xA) {
+            y++;
+            col = -1;
+        } else {
+            if (func_020305ac(col, y, unkVal2, curChar, param6) == 1) {
+                col++;
+            }
+            col++;
+        }
+    } while (*cursor != 0);
+}
 
 THUMB void DisplayDebugTextFormat(unk32 param1, unk32 x, unk32 y, unk32 unkVal1, unk32 unkVal2, char *fmt, va_list args) {
     char buffer[0x100];
