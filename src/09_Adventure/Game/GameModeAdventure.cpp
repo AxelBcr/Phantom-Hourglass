@@ -11,6 +11,7 @@ extern unk32 data_027e1044;
 extern unk32 data_ov000_020eab04;
 extern unk32 data_ov000_020eab08;
 extern unk8 data_ov000_020eab09;
+extern unk8 data_027e0718;
 
 extern "C" void *func_ov003_020f4510();
 extern "C" void func_ov000_02078b0c();
@@ -34,7 +35,6 @@ THUMB GameModeAdventure *GameModeAdventure::Create(unk32 param1) {
     return new(data_027e0ce0[1], 4) GameModeAdventure(param1);
 }
 
-// non-matching
 THUMB GameModeAdventure::GameModeAdventure(unk32 param1) :
     GameModePlay(param1) {
     FlagsUnk2 local_28;
@@ -43,7 +43,7 @@ THUMB GameModeAdventure::GameModeAdventure(unk32 param1) :
     this->mUnk_00c = new(data_027e0ce0[1], 4) UnkStruct_020fadf4(this->mUnk_008);
     this->mUnk_010 = new(data_027e0ce0[1], 4) UnkStruct_020f2978();
     this->mUnk_014 = new(data_027e0ce0[1], 4) UnkStruct_0211ac0c(this->mUnk_010);
-    data_027e1044  = param1;
+    data_027e1044  = (unk32)this;
     func_ov003_020f4510();
 
     local_28.mUnk_00.mUnk_00   = 0x47;
@@ -56,12 +56,14 @@ THUMB GameModeAdventure::GameModeAdventure(unk32 param1) :
     local_28.mUnk_04.mUnk_10   = 0;
     local_28.mUnk_04.mUnk_11   = 0;
 
-    if (gGame.mUnk_102 != 0) {
+    if (((u8 *)&data_027e0718)[2] != 0) {
+        AdventureFlags::Get_FlagsUnk_00(0x17, &local_28);
+    } else if (gGame.mPrevModeId == 1) {
         AdventureFlags::Get_FlagsUnk_00(0x17, &local_28);
     } else {
-        if (gGame.mPrevModeId == 1) {
-            AdventureFlags::Get_FlagsUnk_00(0x17, &local_28);
-        } else if (data_ov000_020eab04 == 0x47) {
+        unk32 *eab04 = &data_ov000_020eab04;
+
+        if (*eab04 == 0x47) {
             AdventureFlags::Get_FlagsUnk_00(0x01, &local_28);
         } else {
             unk32 index = AdventureFlags::func_ov00_02097ecc();
@@ -69,9 +71,9 @@ THUMB GameModeAdventure::GameModeAdventure(unk32 param1) :
             if (index != 0x21) {
                 AdventureFlags::Get_FlagsUnk_00(index, &local_28);
             } else {
-                local_28.mUnk_00.mUnk_00 = data_ov000_020eab04;
-                local_28.mUnk_04.mUnk_0e = data_ov000_020eab08;
-                local_28.mUnk_04.mUnk_0f = data_ov000_020eab09;
+                local_28.mUnk_00.mUnk_00 = *eab04;
+                local_28.mUnk_04.mUnk_0e = ((u8 *)eab04)[4];
+                local_28.mUnk_04.mUnk_0f = ((u8 *)eab04)[5];
             }
         }
     }
@@ -83,15 +85,17 @@ THUMB GameModeAdventure::GameModeAdventure(unk32 param1) :
 
 ARM UnkStruct_020f2978_00::~UnkStruct_020f2978_00() {}
 
-// non-matching
 THUMB GameModeAdventure::~GameModeAdventure() {
+    UnkStruct_0211ac0c *unk14;
+
     func_ov000_02078b0c();
     func_ov003_020f4534();
     data_027e1044 = 0;
 
-    if (this->mUnk_014 != NULL) {
-        this->mUnk_014->mUnk_04.Unregister();
-        delete this->mUnk_014;
+    unk14 = this->mUnk_014;
+    if (unk14 != NULL) {
+        unk14->mUnk_04.Unregister();
+        delete unk14;
     }
 
     delete this->mUnk_010;
