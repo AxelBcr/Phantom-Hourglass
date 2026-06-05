@@ -357,10 +357,9 @@ ARM unk32 UnkStruct_020397f8::func_0203a30c() {
     return this->mUnk_574 / this->pInfoEntry->mUnk_06;
 }
 
-// non-matching (regalloc)
 ARM void UnkStruct_020397f8::vfunc_48() {
     if (this->mUnk_164 != NULL && this->mUnk_164->mUnk_15c > 0) {
-        this->func_02038b40();
+        this->mUnk_164->func_02038b40();
     }
 
     this->mUnk_410.func_0203ec34();
@@ -934,16 +933,16 @@ ARM void UnkStruct_020397f8::func_0203be08() {
 
 ARM void UnkStruct_020397f8::func_0203be64() {}
 
-// non-matching
 ARM bool UnkStruct_020397f8::func_0203c084() {
-    unk32 uVar4;
+    bool uVar4;
+    bool bVar3;
     bool bVar2;
     bool bVar1;
-    bool bVar3;
 
     uVar4 = 0;
 
     if (this->mUnk_50 == 0) {
+        bVar3 = true;
         bVar2 = true;
         bVar1 = true;
 
@@ -952,12 +951,16 @@ ARM bool UnkStruct_020397f8::func_0203c084() {
         }
 
         if (!bVar1 && gGame.mUnk_101 == 0) {
+            bVar2 = false;
+        }
+
+        if (!bVar2) {
             if ((data_027e0d38 != NULL && data_027e0d38->mUnk_14 == 1) == 0) {
-                bVar2 = false;
+                bVar3 = false;
             }
         }
 
-        if (bVar2) {
+        if (bVar3) {
             uVar4 = 1;
         }
     }
