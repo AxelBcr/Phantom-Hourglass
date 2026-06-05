@@ -9,7 +9,6 @@
 #include "nds/button.h"
 #include "nds/math.h"
 #include <stdarg.h>
-#include <string.h>
 
 void DisplayDebugText(unk32 x, unk32 y, unk32 unkVal1, unk32 unkVal2, char *, unk32);
 void DisplayDebugTextFormat(unk32 param1, unk32 x, unk32 y, unk32 unkVal1, unk32 unkVal2, char *fmt, va_list args);
@@ -114,7 +113,7 @@ THUMB void UnkStruct_02063220::func_0202f4b4(void) {
     if (this->path != NULL) {
         DisplayDebugText(0, 21, 0, 0, "(LastFile)", 1);
         strncpy(buffer, this->path, sizeof(buffer) - 1);
-        buffer[0] = '\0';
+        buffer[sizeof(buffer)] = '\0';
         DisplayDebugText(0, 22, 0, 0, buffer, 1);
     }
 }
