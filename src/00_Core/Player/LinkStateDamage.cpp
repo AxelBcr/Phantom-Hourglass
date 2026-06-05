@@ -1,10 +1,18 @@
 #include "Player/LinkStateDamage.hpp"
+#include "Player/LinkStateItem.hpp"
+#include "Player/EquipBombchu.hpp"
 #include "Game/Game.hpp"
+#include "Item/ItemManager.hpp"
+#include "Save/AdventureFlags.hpp"
+#include "DTCM/UnkStruct_027e0e58.hpp"
+#include "Unknown/UnkStruct_020eec9c.hpp"
 #include "Unknown/UnkStruct_020e9360.hpp"
 #include "Unknown/UnkStruct_ov000_020e9c88.hpp"
 
 extern "C" unk32 func_0201e388(void *param1, const char *param2);
 extern "C" void func_02019534(void *model, unk32 param1, unk32 param2);
+extern "C" void func_0202d95c(Vec3p *param1, q20 param2);
+void func_ov000_020b7e6c(s32 *param1);
 
 static char *gShipParts[8] = {"brg", "anc", "pdl", "hul", "can", "dco", "bow", "fnl"};
 
@@ -66,7 +74,52 @@ ARM void LinkStateDamage::OnStateEnter() {
     this->func_ov00_020a8a4c(&data_ov000_020e5b50, 1);
 }
 
-ARM void LinkStateDamage::OnStateLeave(s32 param1) {}
+ARM void LinkStateDamage::OnStateLeave(s32 param1) {
+    this->LinkStateBase::OnStateLeave(param1);
+
+    switch (this->mUnk_1c) {
+        case 5: {
+            for (s32 *p = (s32 *) this->mUnk_34; p != (s32 *) &this->mUnk_3c; p++) {
+                func_ov000_020b7e6c(p);
+            }
+            break;
+        }
+        case 6: {
+            *((u8 *) this->GetPlayerControlData() + 0x14b) = 0;
+            func_ov000_020b7e6c((s32 *) &this->mUnk_9c);
+            UnkStruct_027e0e58 *p1 = data_027e0e58;
+            p1->func_ov000_0207c1b0(0x21, this->GetPlayerPos(), 1, 0, 0);
+            UnkStruct_027e0e58 *p2 = data_027e0e58;
+            p2->func_ov000_0207c1b0(0x22, this->GetPlayerPos(), 1, 0, 0);
+            data_ov000_020eec9c.func_ov000_020d7a84(0xd9, this->GetPlayerPos());
+            break;
+        }
+        case 0xd: {
+            for (s32 *p = (s32 *) this->mUnk_a0; p != (s32 *) &this->mUnk_ac; p++) {
+                func_ov000_020b7e6c(p);
+            }
+            func_ov000_020b7e6c((s32 *) &this->mUnk_ac);
+            this->func_ov00_020a84bc(1);
+            *((u8 *) this->GetPlayerControlData() + 0x14d) = 0;
+            this->func_ov005_021113c4(false);
+            break;
+        }
+        default:
+            break;
+    }
+
+    *(u16 *) this->GetPlayer_Unk18() = 0;
+    this->mUnk_22 = 0;
+    this->mUnk_31 = 0;
+    if (gGame.mModeId == 2 && this->GetCurrentCharacterHealth() <= 0 && this->mUnk_18 != 0xd &&
+        this->mUnk_18 != 0xf && !gItemManager->HasItem((ItemFlag) 0) &&
+        gAdventureFlags->Get((AdventureFlag) 0xff)) {
+        gAdventureFlags->Set((AdventureFlag) 0xf, true);
+    }
+    if (param1 != 5) {
+        this->mUnk_18 = 0;
+    }
+}
 
 ARM void LinkStateDamage::func_ov00_020ac9e4(unk32 param1) {
     if (!this->func_ov005_02110f50(this->mUnk_30, param1, this->mUnk_22, (u32 *) this->mUnk_b0)) {
@@ -114,7 +167,101 @@ ARM void LinkStateDamage::vfunc_30(unk32 param1) {
     }
 }
 
-ARM void LinkStateDamage::func_ov00_020acb6c(Vec3p *param1, unk32 param2) {}
+ARM void LinkStateDamage::func_ov00_020acb6c(Vec3p *param1, unk32 param2) {
+    Vec3p sp;
+
+    if (gGame.mModeId == 2 && gItemManager->GetEquipItem(ItemFlag_BombchuBag) != NULL) {
+        LinkStateItem::GetEquipBombchu()->func_ov014_0213ec64();
+    }
+
+    this->mUnk_18 = param2;
+
+    q20 pz = param1->z;
+    q20 px = param1->x;
+    sp.x   = px;
+    sp.y   = 0;
+    sp.z   = pz;
+
+    s16 groundAngle = FX_Atan2Idx(px, pz);
+
+    s16 diff      = groundAngle - *(s16 *) this->GetPlayerAngle();
+    if (diff < 0) {
+        diff = -diff;
+    }
+    this->mUnk_30 = diff < 0x4000;
+
+    switch (this->mUnk_18) {
+        case 1:
+        case 4:
+        case 5:
+        case 6:
+            func_0202d95c(&sp, 0x28f);
+            this->ApplyImpulse((s16) *this->GetPlayerAngle(), 0x28f);
+            *this->GetPlayerAngle() = groundAngle;
+            if (!this->mUnk_30) {
+                *(s16 *) this->GetPlayerAngle() -= 0x8000;
+            }
+            break;
+        case 3:
+            func_0202d95c(&sp, 0x4cd);
+            *this->GetPlayerAngle() = groundAngle;
+            if (!this->mUnk_30) {
+                *(s16 *) this->GetPlayerAngle() -= 0x8000;
+            }
+            break;
+        case 9: {
+            Vec3p *vel = this->GetPlayerVel();
+            vel->x     = param1->x;
+            vel->y     = param1->y;
+            vel->z     = param1->z;
+            s16 a                   = FX_Atan2Idx(sp.x, sp.z);
+            *this->GetPlayerAngle() = a;
+            *(s16 *) this->GetPlayerAngle() -= 0x8000;
+            break;
+        }
+        case 2:
+        case 8:
+            func_0202d95c(&sp, 0x400);
+            sp.y                    = (this->mUnk_18 == 2) ? 0x548 : 0x19a;
+            *this->GetPlayerAngle() = groundAngle;
+            if (!this->mUnk_30) {
+                *(s16 *) this->GetPlayerAngle() -= 0x8000;
+            }
+            if (this->mUnk_18 == 8) {
+                this->func_ov00_020a82ac();
+            }
+            break;
+        case 7: {
+            s32 halfX, halfZ;
+            halfZ      = this->GetPlayerVel()->z / 2;
+            halfX      = this->GetPlayerVel()->x / 2;
+            Vec3p *vel = this->GetPlayerVel();
+            vel->x     = halfX;
+            vel->y     = 0;
+            vel->z     = halfZ;
+            func_0202d95c(&sp, 0x266);
+            sp.y           = 0x333;
+            s16 diff2      = groundAngle - *(s16 *) this->GetPlayerAngle();
+            if (diff2 < 0) {
+                diff2 = -diff2;
+            }
+            this->mUnk_30 = diff2 < 0x4000;
+            this->mUnk_22 = 2;
+            break;
+        }
+        case 11:
+            func_0202d95c(&sp, 0x266);
+            break;
+        case 12:
+            break;
+        case 13:
+            return;
+        default:
+            return;
+    }
+
+    Vec3p_Add(this->GetPlayerVel(), &sp, this->GetPlayerVel());
+}
 
 ARM void LinkStateDamage::Knockback(Vec3p *knockbackVec, unk32 param2) {
     this->mUnk_18     = 2;
