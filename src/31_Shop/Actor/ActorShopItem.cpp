@@ -762,13 +762,14 @@ ARM void ActorShopItemShipPart::vfunc_20(bool param1) {
         scale2.z = size;
         sShip2Model->SetTransform(&scale2, &rotation2, &translation);
 
-        Vec3p tempVec = UnkStruct_ov031_02183e80::GetInstance()->mUnk_178;
+        Vec3p *unkVec = &UnkStruct_ov031_02183e80::GetInstance()->mUnk_178;
+        Vec3p tempVec = *unkVec;
         translation   = tempVec;
         Vec3p_Add(&mPos, &translation, &translation);
         Vec3p scale;
-        func_ov009_0211d090(&scale, &tempVec);
+        func_ov009_0211d090(&scale, unkVec);
         Mat3p rotation;
-        func_ov009_0211d00c((Mat3p *) &rotation, &tempVec);
+        func_ov009_0211d00c((Mat3p *) &rotation, unkVec);
         mModel->SetTransform(&scale, (Mat3p *) &rotation, &translation);
     } else {
         ActorShopItem::vfunc_20(param1);
@@ -1011,9 +1012,10 @@ ARM s32 ActorShopItem::GetPrice() {
 }
 
 ARM s32 ActorShopItemHeartContainer::GetPrice() {
-    if (ActorItemSellerBase::GetCurrentSeller()->mUnk_470 == 1) {
+    switch (ActorItemSellerBase::GetCurrentSeller()->mUnk_470) {
+    case 1:
         return 1500;
-    } else {
+    default:
         return 2000;
     }
 }
