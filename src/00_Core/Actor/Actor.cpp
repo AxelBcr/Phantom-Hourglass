@@ -133,7 +133,7 @@ ARM unk32 Actor::vfunc_38() {
     return func_ov00_02087ef0();
 }
 
-ARM unk8 Actor::func_ov00_020c1788() {
+ARM u8 Actor::func_ov00_020c1788() {
     return gMapManager->func_ov00_02083570(mUnk_010, mUnk_011);
 }
 
@@ -474,7 +474,7 @@ ARM bool Actor::func_ov00_020c1fc8(PlayerCollide flags) {
 ARM bool Actor::CollidesWithShield(Cylinder *param1) {
     Vec3p vecFromPlayer;
     Vec3p_Sub(&mPos, &gPlayerPos, &vecFromPlayer);
-    s32 currAngle = gPlayerAngle;
+    s32 currAngle = *(s16 *) &gPlayerAngle;
     s32 angle     = FX_Atan2Idx(vecFromPlayer.x, vecFromPlayer.z);
     s32 angleDiff = (s16) angle - currAngle;
     if (angleDiff < 0) {
@@ -855,7 +855,7 @@ ARM bool Actor::func_ov00_020c2ed4() {
 
     s32 index = rope->func_ov14_0213d440(mRef.id);
     if (index >= 0) {
-        ActorRope *actor = rope->GetRopeActor();
+        bool actor = rope->GetRopeActor();
         if (actor) {
             Vec3p vel;
             if (rope->func_ov14_0213d81c(index, &vel)) {

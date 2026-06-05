@@ -226,7 +226,7 @@ public:
 
     bool func_01fffd04(s32 param1);
 
-    unk8 func_ov00_020c1788();
+    u8 func_ov00_020c1788();
     void SetUnk_129(bool value);
     void SetUnk_11c(bool value);
     bool func_ov00_020c195c();
