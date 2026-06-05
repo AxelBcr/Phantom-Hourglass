@@ -77,7 +77,7 @@ ARM bool EquipBombchu_Unk_02198d00::vfunc_10(s32 *param1) {
     if ((*(s32 *) ((s32) param1 + 4) & 0x800) == 0) {
         return false;
     }
-    sUnk_02198d00.mUnk_10 = true;
+    sUnk_02198d00.mUnk_10.x = 1;
     return false;
 }
 
@@ -728,20 +728,18 @@ extern "C" void func_ov000_020a61ac(Vec3p *vec, s16 angle);
 ARM unk32 EquipBombchu::func_ov058_02199ef0(TilePos param1) {
     s32 iVar1;
     s32 iVar2;
-    s16 sVar3;
+    s32 sVar3;
     s32 result;
-    Vec3p local_58;
-    Vec3p local_4c;
     Vec3p local_40;
+    Vec3p local_4c;
+    Vec3p local_58;
 
-    TilePos local_5c = param1;
-    gMapManager->func_ov00_02083c7c(&local_40, local_5c);
-    for (s32 iVar2 = 0; iVar2 < 4; iVar2++) {
-        sVar3      = 0;
+    gMapManager->func_ov00_02083c7c(&local_40, param1);
+    for (iVar2 = 0, sVar3 = 0; iVar2 < 4; iVar2++) {
         local_58.x = 0;
         local_58.y = 0;
         local_58.z = 0x400;
-        func_ov000_020a61ac(&local_58, (int) sVar3);
+        func_ov000_020a61ac(&local_58, (s16) sVar3);
         local_4c.x = local_40.x;
         local_4c.y = local_40.y;
         local_4c.z = local_40.z;
