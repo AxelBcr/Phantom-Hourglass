@@ -1,6 +1,7 @@
 #include "Unknown/UnkStruct_0203dae0.hpp"
 #include "System/SysNew.hpp"
 #include "Unknown/UnkStruct_02075dac.hpp"
+#include "Unknown/UnkStruct_02038aa0.hpp"
 
 extern u32 *data_027e0ce0[];
 extern "C" void Fill256(unk32, unk16 *, unk32, unk32);
@@ -9,7 +10,7 @@ extern "C" u16 func_0203d318(unk32, unk32);
 extern "C" void func_020298b8(unk32 *, unk32, unk32, unk32, unk32);
 extern "C" void func_02029830(unk32 *, unk32, unk32, unk32, unk32);
 extern "C" unk32 func_0203d400(u8);
-extern "C" void func_02035440(u8);
+extern "C" unk32 func_02035440(u8);
 
 // non-matching
 THUMB UnkStruct_0203dae0::UnkStruct_0203dae0(u8 param1) {
@@ -110,18 +111,16 @@ ARM void UnkStruct_0203dae0::func_0203ddfc() {
     this->mUnk_11c          = 0;
 }
 
-ARM void UnkStruct_0203dae0::func_0203de14() {
-    //! TODO: class?
-    func_02035440(this->mUnk_50);
+ARM unk32 UnkStruct_02038aa0::func_0203de14(u16 *param1) {
+    return func_02035440(this->mUnk_50);
 }
 
-// non-matching
 ARM s32 UnkStruct_0203dae0::func_0203de24() {
     if (func_0203d400(this->UnkStruct_02032f0c::func_02032fa4()) == 0x0) {
-        return this->mUnk_10[5] * this->mUnk_10[6] * 0x20;
+        return this->mUnk_14 * this->mUnk_18 * 0x20;
     }
 
-    return this->mUnk_10[6] << 0xa;
+    return this->mUnk_18 << 0xa;
 }
 
 ARM bool UnkStruct_0203dae0::func_0203de58(s32 param1) {}
