@@ -613,7 +613,7 @@ LAB_arm9_ov000__0207e724:
 }
 
 ARM unk8 *MapBase::func_ov00_0207e940(unk8 *param_1) {
-    //__cxa_vec_cleanup(param_1 + 0x18, 3, 0x10, func_ov00_0207e968);
+    __cxxabiv1::__cxa_vec_cleanup(param_1 + 0x18, 3, 0x10, (__cxxabiv1::__cxa_cdtor_type) func_ov00_0207e968);
     return param_1;
 }
 
@@ -2209,7 +2209,7 @@ ARM void MapBase::func_ov00_02080de8(unk32 param_2) {
     unk8 uVar2 = 0;
     UnkStruct_02080de8_iVar3 *iVar3;
 
-    iVar3 = (UnkStruct_02080de8_iVar3 *) ((unk32 *) data_027e0f64->mUnk_4 + param_2);
+    iVar3 = (UnkStruct_02080de8_iVar3 *) ((UnkStruct_027e0f64 *) ((unk32 *) data_027e0f64 + param_2))->mUnk_4;
 
     switch (iVar3->mUnk_15c) {
         case 0:
@@ -2218,9 +2218,11 @@ ARM void MapBase::func_ov00_02080de8(unk32 param_2) {
         case 0x15:
         case 0x16:
         case 0x33:
-        case 0xb:
         case 0x5a:
         case 0x5b:
+            uVar2 = 0;
+            goto LAB_arm9_ov000__02080ec8;
+        case 0xb:
             uVar2 = 0;
             goto LAB_arm9_ov000__02080ec8;
         case 3:
@@ -2231,7 +2233,7 @@ ARM void MapBase::func_ov00_02080de8(unk32 param_2) {
     }
 
 LAB_02080e20_caseD_c:
-    if ((func_ov000_02087dd8(iVar3) != 0) && ((iVar3->mUnk_224 <= 0x1c72 || iVar3->mUnk_224 >= 0x4000))) {
+    if ((func_ov000_02087dd8(iVar3) != 0) && ((iVar3->mUnk_224 <= 0x1c72 || iVar3->mUnk_224 >= 0x4000 - 0x1c72))) {
         uVar2 = 0x1f;
     }
 LAB_arm9_ov000__02080ec8:
